@@ -51,12 +51,12 @@ seurat2anndata <- function(
 
     adata <- anndata$AnnData(
         X = Matrix::t(X),
-        layers['raw'] = Matrix::t(raw.X),
         obs = obs,
         var = var,
         obsm = obsm,
         layers = layers
     )
+    adata.layers['raw'] = Matrix::t(raw.X)
 
     if (!is.null(outFile))
         adata$write(outFile, compression = 'gzip')
