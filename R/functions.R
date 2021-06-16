@@ -12,9 +12,10 @@
 }
 
 seurat2anndata <- function(
-    obj, outFile = NULL, assay = 'RNA', main_layer = 'data', transfer_layers = NULL, drop_single_values = TRUE
+    obj, outFile = NULL, assay = 'RNA', main_layer = 'data', transfer_layers = NULL, drop_single_values = TRUE, raw.assay = 'RNA', raw.main_layer = 'data'
 ) {
     main_layer <- match.arg(main_layer, c('data', 'counts', 'scale.data'))
+    raw.main_layer <- match.arg(raw.main_layer, c('data', 'counts', 'scale.data'))
     transfer_layers <- transfer_layers[
         transfer_layers %in% c('data', 'counts', 'scale.data')]
     transfer_layers <- transfer_layers[transfer_layers != main_layer]
@@ -23,6 +24,7 @@ seurat2anndata <- function(
         obj <- Seurat::UpdateSeuratObject(object = obj)
 
     X <- Seurat::GetAssayData(object = obj, assay = assay, slot = main_layer)
+    raw.X <- Seurat::GetAssayData(object = obj, assay = raw.assay, slot = raw.main_layer)
 
     obs <- .regularise_df(obj@meta.data, drop_single_values = drop_single_values)
 
@@ -49,6 +51,7 @@ seurat2anndata <- function(
 
     adata <- anndata$AnnData(
         X = Matrix::t(X),
+        raw.X = Matrix::t(X),
         obs = obs,
         var = var,
         obsm = obsm,
