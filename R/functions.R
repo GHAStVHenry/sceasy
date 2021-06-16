@@ -24,7 +24,7 @@ seurat2anndata <- function(
         obj <- Seurat::UpdateSeuratObject(object = obj)
 
     X <- Seurat::GetAssayData(object = obj, assay = assay, slot = main_layer)
-    raw.X <- Seurat::GetAssayData(object = obj, assay = raw.assay, slot = raw.main_layer)[row.names(Seurat::GetAssayData(object = obj, assay = raw.assay, slot = raw.main_layer)) %in% row.names(X)]
+    raw.X <- Seurat::GetAssayData(object = obj, assay = raw.assay, slot = raw.main_layer)[row.names(Seurat::GetAssayData(object = obj, assay = raw.assay, slot = raw.main_layer)) %in% row.names(X),]
 
     obs <- .regularise_df(obj@meta.data, drop_single_values = drop_single_values)
 
