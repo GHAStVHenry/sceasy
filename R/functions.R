@@ -51,7 +51,7 @@ seurat2anndata <- function(
 
     adata <- anndata$AnnData(
         X = Matrix::t(X),
-        raw.X = Matrix::t(X),
+        layers['raw'] = Matrix::t(raw.X),
         obs = obs,
         var = var,
         obsm = obsm,
