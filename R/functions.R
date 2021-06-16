@@ -46,6 +46,7 @@ seurat2anndata <- function(
         mat <- Seurat::GetAssayData(object = obj, assay = assay, slot = layer)
         if (all(dim(mat) == dim(X))) layers[[layer]] <- Matrix::t(mat)
     }
+    layers[['raw']] <- Matrix::t(raw.X)
 
     anndata <- reticulate::import('anndata', convert = FALSE)
 
@@ -56,7 +57,6 @@ seurat2anndata <- function(
         obsm = obsm,
         layers = layers
     )
-    adata.layers['raw'] = Matrix::t(raw.X)
 
     if (!is.null(outFile))
         adata$write(outFile, compression = 'gzip')
