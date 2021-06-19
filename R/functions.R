@@ -46,12 +46,14 @@ seurat2anndata <- function(
         mat <- Seurat::GetAssayData(object = obj, assay = assay, slot = layer)
         if (all(dim(mat) == dim(X))) layers[[layer]] <- Matrix::t(mat)
     }
-    layers[['raw.X']] <- Matrix::t(raw.X)
 
     anndata <- reticulate::import('anndata', convert = FALSE)
 
+    raw.adata <- anndata$AnnData( X = Matrix::t(raw.X) )
+
     adata <- anndata$AnnData(
         X = Matrix::t(X),
+        raw = raw.adata,
         obs = obs,
         var = var,
         obsm = obsm,
